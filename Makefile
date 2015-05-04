@@ -1,3 +1,22 @@
-all:
-	g++ -std=c++11 -o bin/find_tss src/find_tss.cpp src/smooth.cpp src/bg.cpp src/arguments.cpp src/tabfile.cpp -I./include -pthread
+CC=g++
+IDIR=./include
+ODIR=./obj
+CFLAGS=-I$(IDIR) -std=c++11 -pthread
 
+_DEPS = arguments.h bg.h tabfile.h smooth.h
+DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
+
+_OBJ = arguments.o bg.o tabfile.o smooth.o
+OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
+
+
+$(ODIR)/%.o: %.c $(DEPS)
+	$(CC) -c -o $@ $< $(CFLAGS)
+
+find_tss: $(OBJ)
+	gcc -o $@ $^ $(CFLAGS)
+
+.PHONY: clean
+
+clean:
+	rm -f $(ODIR)/*.o
