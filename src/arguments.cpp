@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <cstdlib>
 #include <utility>
+#include <iomanip>
 
 namespace arg
 {
@@ -285,10 +286,28 @@ namespace arg
         }
         for(int i=0;i<n;i++)
         {
-            if(v->is_optional[i]==false&&is_passed[i]==false)
+            if(!v->is_optional[i]&&!is_passed[i])
             {
-                std::cout<<"Arguments"<<std::endl;
-                for(int j=0;j<n;j++) std::cout<<v->id_string[j]<<"\t:\t"<<v->description[j]<<std::endl;
+                std::string com(argv[0]);
+                int spos=com.find_last_of("/");
+                if(spos!=std::string::npos) com=com.substr(spos+1);
+                std::cerr<<"Usage:"<<std::endl;
+                std::cerr<<std::setw(4)<<""<<com<<" [options]"<<std::endl<<std::endl;
+                std::cerr<<std::setw(5)<<""<<"Required Options:"<<std::endl;
+                for(int j=0;j<n;j++)
+                    if(!v->is_optional[j])
+                        std::cerr<<std::setw(6)<<""<<std::left<<std::setw(8)<<v->id_string[j]<<v->description[j]<<std::endl;
+                std::cerr<<std::endl;
+                for(int j=0;j<n;j++)
+                    if(v->is_optional[j])
+                    {
+                        std::cerr<<std::setw(5)<<""<<"Additional Options:"<<std::endl;
+                        break;
+                    }
+                for(int j=0;j<n;j++)
+                    if(v->is_optional[j])
+                        std::cerr<<std::setw(6)<<""<<std::left<<std::setw(8)<<v->id_string[j]<<v->description[j]<<std::endl;
+                std::cerr<<std::endl;
                 return false;
             }
         }

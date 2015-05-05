@@ -5,17 +5,18 @@ ODIR=./obj
 BDIR=./bin
 CFLAGS=-I$(IDIR) -std=c++11 -pthread
 
+_SOBJ = find_tss.o
 _DEPS = arguments.h bg.h tabfile.h smooth.h
+_OBJS = arguments.o bg.o tabfile.o smooth.o
+
+SOBJ = $(patsubst %,$(ODIR)/%,$(_SOBJ))
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
-
-_OBJ = find_tss.o arguments.o bg.o tabfile.o smooth.o
-OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
-
+OBJS = $(patsubst %,$(ODIR)/%,$(_OBJS))
 
 $(ODIR)/%.o: $(SDIR)/%.cpp $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
-find_tss: $(OBJ)
+find_tss: $(SOBJ) $(OBJS)
 	$(CC) -o $(BDIR)/$@ $^ $(CFLAGS)
 
 .PHONY: clean

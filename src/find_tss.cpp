@@ -13,15 +13,14 @@
 #include <functional>
 using namespace std;
 
-// Declarations
-struct args		// Arguments
+// Parameters
+struct args
 {
 	char *pfn,*mfn;			// Bedgraph filenames
 	char *ofn;				// Output filename
-	int nth;
-	int res,sh,bin;				// resolution
-	// Initialization
-	args() { nth=6; res=50; sh=80; bin=5; };
+	int nth;                // Threads to use
+	int res,sh,bin;			// Parameters resolution
+	args() { nth=6; res=50; sh=80; bin=5; }; // Initialization
 	bool get(int argc, char *argv[]);	// Function to parse arguments
 };
 
@@ -41,7 +40,7 @@ int main(int argc,char *argv[])
 	m.load(a.mfn);	// Minus strand data if provided
 	int nchr=p.chr.size();
 		
-	// Arrays of bedgraph data values for every gene
+	// Arrays of bedgraph data values for every chromosome
 	vector<vector<float> > pden(nchr),mden(nchr),den(nchr);	// Data arrays for bedgraph values
 	// Read data into data array, retrieve read counts
 	// Use multithreading
@@ -50,23 +49,24 @@ int main(int argc,char *argv[])
 	for(int i=0;i<a.nth;i++)
 		thr[i]=thread(get_data,ref(pden),ref(mden),ref(den),ref(p),ref(m),ref(a),i);
 	for(int i=0;i<a.nth;i++)
-	{
 		thr[i].join();
-	}
 	cout<<"Finished reading bedgraphs"<<endl;
 
 	vector<vector<int> > ppeakpos(nchr);
 	vector<vector<int> > mpeakpos(nchr);
 	vector<vector<int> > peakpos(nchr);
 	cout<<"Scanning peaks"<<endl;
-	for(int i=0;i<a.nth;i++)
+	// Get plus strand peaks
+    for(int i=0;i<a.nth;i++)
 		thr[i]=thread(get_peak,ref(pden),ref(ppeakpos),ref(a),i);
 	for(int i=0;i<a.nth;i++)
 		thr[i].join();
+    // Get minus strand peaks
 	for(int i=0;i<a.nth;i++)
 		thr[i]=thread(get_peak,ref(mden),ref(mpeakpos),ref(a),i);
 	for(int i=0;i<a.nth;i++)
 		thr[i].join();
+    // Get both strand peaks
 	for(int i=0;i<a.nth;i++)
 		thr[i]=thread(get_peak,ref(den),ref(peakpos),ref(a),i);
 	for(int i=0;i<a.nth;i++)
