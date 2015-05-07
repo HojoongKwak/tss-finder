@@ -18,10 +18,12 @@ OBJS = $(patsubst %,$(ODIR)/%.o,$(_DEPS))
 $(ODIR)/%.o: $(SDIR)/%.cpp $(DEPS) $(SDEP)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
-find_tss: $(SOBJ) $(OBJS)
-	$(CC) -o $(BDIR)/$@ $^ $(CFLAGS)
+$(BDIR)/find_tss: $(SOBJ) $(OBJS)
+	$(CC) -o $@ $^ $(CFLAGS)
 
 .PHONY: clean
 
 clean:
 	rm -f $(ODIR)/*.o
+
+
