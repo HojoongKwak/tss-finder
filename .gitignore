@@ -33,6 +33,7 @@
 # Automake related
 autom4te.cache
 autom4te.cache/*
+src/.deps/
 
 #
 src/find_tss
