@@ -2,7 +2,7 @@
 #include "smooth.h"				// Custom Gaussian smoothing functions
 #include "arguments.h"
 
-#include "find_tss.h"
+#include "find_tss_hk.h"
 
 #include <string>
 #include <vector>
@@ -21,19 +21,9 @@ par::par()
     bin =5;
 };
 
-// Parsing arguments
-bool par::get(int argc, char *argv[])
-{
-	arg::push("-p","Plus strand bedgraph filename",pfn);
-	arg::push("-m","Minus bedgraph filename (optional)",mfn,true);
-	arg::push("-o","Output file prefix",ofn);
-	arg::push("-w","TSS window size (default=20)",window,true);
-	arg::push("-ss","Maximum convergent shift range (default=-120)",shStart,true);
-	arg::push("-se","Maximum divergent shift range (default=120)",shEnd,true);
-	arg::push("-b","Bin size (default=5)",bin,true);
-	arg::push("-nth","Number of threads (default=6)",nth,true);
-	return(arg::get(argc,argv));
-};
+bool par::check() {
+  if ( pfn.empty() || mfn.empty() || ofn.empty() ) return false;
+}
 
 void get_bgdata_thread(float_2d &pden, float_2d &mden, bgdata &p, bgdata &m, par &a, int chrGroup)
 {
