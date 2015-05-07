@@ -12,9 +12,8 @@
 using namespace std;
 
 // Parameter initialization
-par::par()
+par::par() 
 {
-    mfn= NULL;
     nth= 6;
     window = 20;
     shStart = -120;
