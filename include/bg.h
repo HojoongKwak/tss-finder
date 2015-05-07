@@ -6,8 +6,12 @@
 
 struct bgdata
 {
+    // Load data from file
     int load(char *fn);
+    // Get bedgraph level from a range
     void getlevel(std::vector<float> &o, std::string &c, int s, int e, int r=1, bool isaverage=false);
+    // Get bedgraph level of a chromosome
+    void getChr(std::vector<float> &o, std::string &c, int r=1);
 
     std::vector<std::string> chr;
 	std::vector<std::vector<int> > start;
@@ -21,7 +25,6 @@ struct bgdata
 	bool set(std::string &c, int r=1);
     void getcoverage(std::vector<float> &o, std::string &c, int s, int e, int r=1);
     int getChrID(std::string &c);
-    void getChr(std::vector<float> &o, std::string &c);
     float &operator[](int i);
     float operator()(int c,int i);
     float operator()(std::string &c,int i);

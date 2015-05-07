@@ -120,7 +120,7 @@ void bgdata::getlevel(std::vector<float> &o, std::string &c, int s, int e, int r
         for(int i=e;i<s;i++) count[(i-s)/r]++;
         for(int i=0;i<size;i++) if(count[i]>0) o[i]/=count[i];
     }
-}
+};
 
 void bgdata::getcoverage(std::vector<float> &o, std::string &c, int s, int e, int r)
 {
@@ -141,21 +141,25 @@ void bgdata::getcoverage(std::vector<float> &o, std::string &c, int s, int e, in
     std::vector<int> count((e-s)/r+1);
     for(int i=e;i<s;i++) count[(i-s)/r]++;
     for(int i=0;i<size;i++) if(count[i]>0) o[i]/=count[i];
-}
+};
 
-void bgdata::getChr(std::vector<float> &o, std::string &c)
+void bgdata::getChr(std::vector<float> &o, std::string &c, int r)
 {
     int cc=getChrID(c);
     if(cc<0&&cc>=chr.size()) return;
     int size=end[cc].back();
-	o.clear();
-	o.resize(size);
-    int startpos=std::upper_bound(end[cc].begin(),end[cc].end(),0)-end[cc].begin();
-    int endpos=std::upper_bound(start[cc].begin(),start[cc].end(),size)-start[cc].begin();
-    if(startpos==start[cc].size()) return;
-    if(start[cc][startpos]>=size) return;
-    for(int i=start[cc][startpos];i<end[cc][startpos];i++) if(i>=0) o[i]+=val[cc][startpos];
-    for(int i=startpos+1;i<endpos-1;i++)
-        for(int j=start[cc][i];j<end[cc][i];j++) o[j]+=val[cc][i];
-    for(int i=start[cc][endpos-1];i<end[cc][endpos-1];i++) if(i>=0&&i<size) o[i]+=val[cc][endpos-1];
-}
+    if(r>1) getlevel(o, c, 0, size, r);
+	else
+    {
+        o.clear();
+        o.resize(size);
+        int startpos=std::upper_bound(end[cc].begin(),end[cc].end(),0)-end[cc].begin();
+        int endpos=std::upper_bound(start[cc].begin(),start[cc].end(),size)-start[cc].begin();
+        if(startpos==start[cc].size()) return;
+        if(start[cc][startpos]>=size) return;
+        for(int i=start[cc][startpos];i<end[cc][startpos];i++) if(i>=0) o[i]+=val[cc][startpos];
+        for(int i=startpos+1;i<endpos-1;i++)
+            for(int j=start[cc][i];j<end[cc][i];j++) o[j]+=val[cc][i];
+        for(int i=start[cc][endpos-1];i<end[cc][endpos-1];i++) if(i>=0&&i<size) o[i]+=val[cc][endpos-1];
+    }
+};

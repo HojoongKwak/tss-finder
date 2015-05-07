@@ -115,6 +115,7 @@ namespace arg
     template void push(const char*, const char*, float&, bool);
     template void push(const char*, const char*, double&, bool);
     template void push(const char*, const char*, bool&, bool);
+    template void push(const char*, const char*, std::string&, bool);
     template void push(const char*, const char*, std::vector<std::string>&, bool);
     template void push(const char*, const char*, std::vector<int>&, bool);
     template void push(const char*, const char*, std::vector<float>&, bool);
