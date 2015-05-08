@@ -25,5 +25,5 @@ struct par
 
 // Functions used in main
 void get_bgdata(float_2d &pden, float_2d &mden, bgdata &p, bgdata &m, par &a);
-void make_shbed(vector<vector<bedTrack> > &den, float_2d &pden, float_2d &mden, par &a, int shift);
-
+void make_shbed(vector<vector<bedTrack> > &den, float_2d &pden, float_2d &mden, vector<string> &chromName, par &a, int shift);
+void save_bed(vector<vector<bedTrack> > &den, string outputPrefix, int shift); 

@@ -297,7 +297,7 @@ namespace arg
                 std::cerr<<std::setw(5)<<""<<"Required Options:"<<std::endl;
                 for(int j=0;j<n;j++)
                     if(!v->is_optional[j])
-                        std::cerr<<std::setw(6)<<""<<std::left<<std::setw(8)<<v->id_string[j]<<v->description[j]<<std::endl;
+                        std::cerr<<std::setw(6)<<""<<std::left<<std::setw(12)<<v->id_string[j]<<v->description[j]<<std::endl;
                 std::cerr<<std::endl;
                 for(int j=0;j<n;j++)
                     if(v->is_optional[j])
@@ -307,7 +307,7 @@ namespace arg
                     }
                 for(int j=0;j<n;j++)
                     if(v->is_optional[j])
-                        std::cerr<<std::setw(6)<<""<<std::left<<std::setw(8)<<v->id_string[j]<<v->description[j]<<std::endl;
+                        std::cerr<<std::setw(6)<<""<<std::left<<std::setw(12)<<v->id_string[j]<<v->description[j]<<std::endl;
                 std::cerr<<std::endl;
                 return false;
             }

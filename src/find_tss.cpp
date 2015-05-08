@@ -29,6 +29,7 @@ int main(int argc,char *argv[])
 	if(pa.mfn) bm.load(pa.mfn);	    // Minus strand data if provided
 	else bm=bp;
     int nchr=bp.chr.size();
+    vector<string> chromName=bp.chr;
 		
 	// Arrays of bedgraph data values for every chromosome
 	float_2d pden(nchr),mden(nchr);	// Data arrays for bedgraph values
@@ -42,10 +43,8 @@ int main(int argc,char *argv[])
     {
         cerr<<"Analyzing shift size = "<<i<<" bp..."<<endl;
         vector<vector<bedTrack> > den(nchr);
-        make_shbed(den, pden, mden, pa, i);
-
-
-
+        make_shbed(den, pden, mden, chromName, pa, i);     // Make bed tracks
+        save_bed(den, pa.ofn, i);               // Save bed tracks
     }
 };
 
